@@ -7,6 +7,12 @@ describe("Test of Variable Type - Happy Path", () => {
     "snowball",
     "string"
   );
+
+  expectVariableExplicitTypeAnnotation(
+    join(__dirname, "./example_tests.ts"),
+    "loadingStatus",
+    '"loading" | "success" | "error"'
+  );
 });
 
 describe("Test of Variable Type - Negative Path", () => {

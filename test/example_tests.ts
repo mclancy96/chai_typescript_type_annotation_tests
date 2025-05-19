@@ -14,3 +14,5 @@ const swim = (): string => {
 const swimmer = (): number => {
   return "done";
 };
+
+let loadingStatus: "loading" | "success" | "error" = "loading";
