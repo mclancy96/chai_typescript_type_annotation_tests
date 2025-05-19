@@ -21,7 +21,7 @@ export function matchFunctionParameterTypeAnnotation(
   functionName: string,
   expectedParameterTypeArray: string[]
 ) {
-  it(`should have parameters with explicit type annotations of: ${expectedParameterTypeArray}`, () => {
+  it(`${functionName} should have parameters with explicit type annotations of: ${expectedParameterTypeArray}`, () => {
     const tsCode = readFileSync(testFilePath, "utf8");
     const sourceFile = ts.createSourceFile(
       testFilePath,
@@ -67,7 +67,7 @@ export function matchFunctionParameterTypeAnnotation(
 
     expect(
       paramTypes,
-      `Expected parameter types [${expectedParameterTypeArray}] but got [${paramTypes}]. Ensure your parameters are typed correctly or at all`
+      `Expected ${functionName} to have parameter types [${expectedParameterTypeArray}] but got [${paramTypes}]. Ensure your parameters are defined and typed accordingly.`
     ).to.have.members(expectedParameterTypeArray);
   });
 }
