@@ -2,9 +2,10 @@
   "name": "chai_typescript_type_annotation_tests",
   "version": "1.0.0",
   "description": "This provides some chai tests for verifying type annotation in Typescript",
-  "main": "index.js",
+  "main": "dist/explicit_type_annotations.js",
+  "types": "dist/explicit_type_annotations.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc"
   },
   "author": "Mike",
   "license": "ISC",
