@@ -40,48 +40,43 @@ export function expectFunctionParameterTypeAnnotation(
       true
     );
 
-    let found = false;
-
-    function checkNode(node: ts.Node) {
-      if (
-        ts.isFunctionDeclaration(node) &&
-        node.name?.getText() === functionName
-      ) {
-        // Check regular function declarations
-        for (const param of node.parameters) {
-          if (
-            param.name.getText() === paramName &&
-            param.type &&
-            param.type.getText() === paramType
-          ) {
-            found = true;
-          }
-        }
-      } else if (
-        ts.isArrowFunction(node) &&
-        ts.isVariableDeclaration(node.parent)
-      ) {
-        // Check arrow functions assigned to variables
-        if (node.parent.name.getText() === functionName) {
-          for (const param of node.parameters) {
-            if (
-              param.name.getText() === paramName &&
-              param.type &&
-              param.type.getText() === paramType
-            ) {
-              found = true;
-            }
-          }
-        }
-      }
-      ts.forEachChild(node, checkNode);
-    }
-
-    checkNode(sourceFile);
+    const found = checkNode(sourceFile, paramName, functionName);
 
     expect(
       found,
-      `Parameter '${paramName}' of function '${functionName}' must have an explicit type annotation of '${paramType}'`
-    ).to.be.true;
+      `Parameter '${paramName}' of function '${functionName}' must have an explicit type annotation of '${paramType}' but found '${found}'`
+    ).to.equal(paramType);
   });
+}
+
+function checkNode(
+  node: ts.Node,
+  paramName: string,
+  functionName: string
+): string {
+  if (ts.isFunctionDeclaration(node) && node.name?.getText() === functionName) {
+    // Check regular function declarations
+    for (const param of node.parameters) {
+      if (param.name.getText() === paramName && param.type) {
+        return param.type.getText() || "";
+      }
+    }
+  } else if (
+    ts.isArrowFunction(node) &&
+    ts.isVariableDeclaration(node.parent)
+  ) {
+    // Check arrow functions assigned to variables
+    if (node.parent.name.getText() === functionName) {
+      for (const param of node.parameters) {
+        if (param.name.getText() === paramName && param.type) {
+          return param.type.getText() || "";
+        }
+      }
+    }
+  }
+  return (
+    ts.forEachChild(node, (childNode) =>
+      checkNode(childNode, paramName, functionName)
+    ) || ""
+  );
 }

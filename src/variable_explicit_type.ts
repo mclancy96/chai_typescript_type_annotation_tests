@@ -1,4 +1,3 @@
-
 import { expect } from "chai";
 import * as ts from "typescript";
 import { readFileSync } from "fs";
@@ -32,26 +31,22 @@ export function expectVariableExplicitTypeAnnotation(
       true
     );
 
-    let found = false;
-
-    function checkNode(node: ts.Node) {
-      if (
-        ts.isVariableDeclaration(node) &&
-        node.name.getText() === varName &&
-        node.type &&
-        node.type.getText() === typeName
-      ) {
-        found = true;
-      }
-      ts.forEachChild(node, checkNode);
-    }
-
-    checkNode(sourceFile);
+    const found = findNode(sourceFile, varName);
 
     expect(
       found,
-      `${varName} variable must have an explicit type annotation of '${typeName}'`
-    ).to.be.true;
+      `'${varName}' variable must have an explicit type annotation of '${typeName}' but found '${found}'`
+    ).to.equal(typeName);
   });
 }
 
+function findNode(node: ts.Node, varName: string): string {
+  if (ts.isVariableDeclaration(node) && node.name.getText() === varName) {
+    return node.type?.getText() || "";
+  }
+  return (
+    ts.forEachChild(node, (childNode) => {
+      return findNode(childNode, varName);
+    }) || ""
+  );
+}

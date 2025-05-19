@@ -30,44 +30,49 @@ export function matchFunctionParameterTypeAnnotation(
       true
     );
 
-    function checkNode(node: ts.Node, accumulator: string[]) {
-      if (
-        ts.isFunctionDeclaration(node) &&
-        node.name?.getText() === functionName
-      ) {
-        // Check regular function declarations
-        for (const param of node.parameters) {
-          if (
-            param.type &&
-            expectedParameterTypeArray.includes(param.type.getText())
-          ) {
-            accumulator.push(param.type.getText());
-          }
-        }
-      } else if (
-        ts.isArrowFunction(node) &&
-        ts.isVariableDeclaration(node.parent)
-      ) {
-        // Check arrow functions assigned to variables
-        if (node.parent.name.getText() === functionName) {
-          for (const param of node.parameters) {
-            if (
-              param.type &&
-              expectedParameterTypeArray.includes(param.type.getText())
-            ) {
-              accumulator.push(param.type.getText());
-            }
-          }
-        }
-      }
-      ts.forEachChild(node, (childNode) => checkNode(childNode, accumulator));
-    }
     const paramTypes: string[] = [];
-    checkNode(sourceFile, paramTypes);
+    findNodes(sourceFile, functionName, paramTypes, expectedParameterTypeArray);
 
     expect(
       paramTypes,
       `Expected ${functionName} to have parameter types [${expectedParameterTypeArray}] but got [${paramTypes}]. Ensure your parameters are defined and typed accordingly.`
     ).to.have.members(expectedParameterTypeArray);
   });
+}
+
+function findNodes(
+  node: ts.Node,
+  functionName: string,
+  accumulator: string[],
+  expectedParameterTypeArray: string[]
+) {
+  if (ts.isFunctionDeclaration(node) && node.name?.getText() === functionName) {
+    // Check regular function declarations
+    for (const param of node.parameters) {
+      if (
+        param.type &&
+        expectedParameterTypeArray.includes(param.type.getText())
+      ) {
+        accumulator.push(param.type.getText());
+      }
+    }
+  } else if (
+    ts.isArrowFunction(node) &&
+    ts.isVariableDeclaration(node.parent)
+  ) {
+    // Check arrow functions assigned to variables
+    if (node.parent.name.getText() === functionName) {
+      for (const param of node.parameters) {
+        if (
+          param.type &&
+          expectedParameterTypeArray.includes(param.type.getText())
+        ) {
+          accumulator.push(param.type.getText());
+        }
+      }
+    }
+  }
+  ts.forEachChild(node, (childNode) =>
+    findNodes(childNode, functionName, accumulator, expectedParameterTypeArray)
+  );
 }
