@@ -3,13 +3,18 @@ import * as ts from "typescript";
 import { readFileSync } from "fs";
 
 /**
- * This will allow students to name the variables whatever they want without requiring specific names for each variable.
- * Instead of testing a specific variable's type, it takes an array representing the types expected for the parameters
- * of the function in the order that they appear as parameters of the function.
- * @param testFilePath
- * @param functionName
- * @param parameterTypeArray in the format ['string', 'number', 'boolean']
- * @returns
+ * Tests if a function has parameters with specific type annotations.
+ * This function allows flexibility in variable naming while ensuring correct type annotations.
+ * It works with both regular function declarations and arrow functions assigned to variables.
+ *
+ * @param testFilePath - The path to the TypeScript file to test
+ * @param functionName - The name of the function whose parameters to check
+ * @param expectedParameterTypeArray - An array of expected parameter types as strings (e.g., ['string', 'number', 'boolean'])
+ * @returns A Mocha test case that verifies parameter type annotations
+ *
+ * @example
+ * // Test if myFunction has string and number parameters
+ * matchFunctionParameterTypeAnnotation('path/to/file.ts', 'myFunction', ['string', 'number']);
  */
 export function matchFunctionParameterTypeAnnotation(
   testFilePath: string,
