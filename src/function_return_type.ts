@@ -29,30 +29,6 @@ export function expectFunctionReturnTypeAnnotation(
   functionName: string,
   returnType: string
 ) {
-  function checkNode(node: ts.Node): boolean {
-    if (ts.isFunctionDeclaration(node)) {
-      // Handle function declarations as before
-      return (
-        (node.name &&
-          node.name.getText() === functionName &&
-          node.type &&
-          node.type.getText() === returnType) ||
-        false
-      );
-    } else if (ts.isArrowFunction(node)) {
-      // For arrow functions, check the parent node
-      if (ts.isVariableDeclaration(node.parent)) {
-        const arrowFunctionName = node.parent.name.getText();
-        return (
-          (arrowFunctionName === functionName &&
-            node.type &&
-            node.type.getText() === returnType) ||
-          false
-        );
-      }
-    }
-    return ts.forEachChild(node, checkNode) || false;
-  }
   it(`should declare function '${functionName}' with an explicit return type annotation of '${returnType}'`, () => {
     const tsCode = readFileSync(testFilePath, "utf8");
     const sourceFile = ts.createSourceFile(
@@ -62,10 +38,30 @@ export function expectFunctionReturnTypeAnnotation(
       true
     );
 
-    let found = checkNode(sourceFile);
+    const found = findNode(sourceFile, functionName);
     expect(
       found,
-      `Function '${functionName}' must have an explicit return type annotation of '${returnType}'`
-    ).to.be.true;
+      `Function '${functionName}' must have an explicit return type annotation of '${returnType}' but found '${found}'`
+    ).to.deep.equal(returnType);
   });
+}
+function findNode(node: ts.Node, functionName: string): string {
+  if (ts.isFunctionDeclaration(node)) {
+    // Handle function declarations as before
+    if (node.name && node.name.getText() === functionName && node.type) {
+      return node.type.getText();
+    }
+  } else if (ts.isArrowFunction(node)) {
+    // For arrow functions, check the parent node
+    if (ts.isVariableDeclaration(node.parent)) {
+      const arrowFunctionName = node.parent.name.getText();
+      if (arrowFunctionName === functionName && node.type) {
+        return node.type.getText();
+      }
+    }
+  }
+  return (
+    ts.forEachChild(node, (childNode) => findNode(childNode, functionName)) ||
+    ""
+  );
 }

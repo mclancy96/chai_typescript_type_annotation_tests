@@ -40,7 +40,7 @@ export function expectFunctionParameterTypeAnnotation(
       true
     );
 
-    const found = checkNode(sourceFile, paramName, functionName);
+    const found = findNode(sourceFile, paramName, functionName);
 
     expect(
       found,
@@ -49,7 +49,7 @@ export function expectFunctionParameterTypeAnnotation(
   });
 }
 
-function checkNode(
+function findNode(
   node: ts.Node,
   paramName: string,
   functionName: string
@@ -76,7 +76,7 @@ function checkNode(
   }
   return (
     ts.forEachChild(node, (childNode) =>
-      checkNode(childNode, paramName, functionName)
+      findNode(childNode, paramName, functionName)
     ) || ""
   );
 }
