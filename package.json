@@ -5,7 +5,8 @@
   "main": "dist/explicit_type_annotations.js",
   "types": "dist/explicit_type_annotations.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "tsc --noEmit && mocha -r ts-node/register 'test/**/*.test.ts'"
   },
   "author": "Mike",
   "license": "ISC",
