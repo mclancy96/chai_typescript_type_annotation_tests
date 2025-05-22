@@ -45,7 +45,7 @@ export function expectFunctionReturnTypeAnnotation(
     ).to.deep.equal(returnType);
   });
 }
-function findNode(node: ts.Node, functionName: string): string {
+export function findNode(node: ts.Node, functionName: string): string {
   if (ts.isFunctionDeclaration(node)) {
     // Handle function declarations
     if (node.name && node.name.getText() === functionName && node.type) {
