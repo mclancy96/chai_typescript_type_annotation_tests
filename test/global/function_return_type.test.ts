@@ -3,14 +3,14 @@ import { expectFunctionReturnTypeAnnotation } from "../../src/global/function_re
 
 describe("Test of Function Return - Happy Path", () => {
   expectFunctionReturnTypeAnnotation(
-    join(__dirname, "./example_tests.ts"),
+    join(__dirname, "../example_tests.ts"),
     "swim",
     "string"
   );
 });
 describe("Test of Function Return - Negative Path", () => {
   expectFunctionReturnTypeAnnotation(
-    join(__dirname, "./example_tests.ts"),
+    join(__dirname, "../example_tests.ts"),
     "swimmer",
     "string"
   );

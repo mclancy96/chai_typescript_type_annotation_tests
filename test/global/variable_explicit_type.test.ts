@@ -3,13 +3,13 @@ import { expectVariableExplicitTypeAnnotation } from "../../src/global/variable_
 
 describe("Test of Variable Type - Happy Path", () => {
   expectVariableExplicitTypeAnnotation(
-    join(__dirname, "./example_tests.ts"),
+    join(__dirname, "../example_tests.ts"),
     "snowball",
     "string"
   );
 
   expectVariableExplicitTypeAnnotation(
-    join(__dirname, "./example_tests.ts"),
+    join(__dirname, "../example_tests.ts"),
     "loadingStatus",
     '"loading" | "success" | "error"'
   );
@@ -17,7 +17,7 @@ describe("Test of Variable Type - Happy Path", () => {
 
 describe("Test of Variable Type - Negative Path", () => {
   expectVariableExplicitTypeAnnotation(
-    join(__dirname, "./example_tests.ts"),
+    join(__dirname, "../example_tests.ts"),
     "bowsnall",
     "string"
   );

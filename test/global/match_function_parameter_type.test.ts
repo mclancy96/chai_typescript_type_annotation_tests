@@ -3,7 +3,7 @@ import { matchFunctionParameterTypeAnnotation } from "../../src/global/match_fun
 
 describe("Test of Match Function Parameter - Happy Path", () => {
   matchFunctionParameterTypeAnnotation(
-    join(__dirname, "./example_tests.ts"),
+    join(__dirname, "../example_tests.ts"),
     "greet",
     ["string"]
   );
@@ -11,7 +11,7 @@ describe("Test of Match Function Parameter - Happy Path", () => {
 
 describe("Test of Match Function Parameter - Negative Path", () => {
   matchFunctionParameterTypeAnnotation(
-    join(__dirname, "./example_tests.ts"),
+    join(__dirname, "../example_tests.ts"),
     "greet",
     ["string", "string"]
   );
