@@ -1,5 +1,5 @@
 import { join } from "path";
-import { matchFunctionParameterTypeAnnotation } from "../src/match_function_parameter_type";
+import { matchFunctionParameterTypeAnnotation } from "../../src/global/match_function_parameter_type";
 
 describe("Test of Match Function Parameter - Happy Path", () => {
   matchFunctionParameterTypeAnnotation(

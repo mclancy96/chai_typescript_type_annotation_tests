@@ -62,6 +62,16 @@ function findNode(
       }
     }
   } else if (
+    ts.isMethodDeclaration(node) &&
+    node.name.getText() === functionName
+  ) {
+    // Check regular method declarations
+    for (const param of node.parameters) {
+      if (param.name.getText() === paramName && param.type) {
+        return param.type.getText() || "";
+      }
+    }
+  } else if (
     ts.isArrowFunction(node) &&
     ts.isVariableDeclaration(node.parent)
   ) {
@@ -71,6 +81,17 @@ function findNode(
         if (param.name.getText() === paramName && param.type) {
           return param.type.getText() || "";
         }
+      }
+    }
+  } else if (
+    ts.isArrowFunction(node) &&
+    ts.isPropertyAssignment(node.parent) &&
+    node.parent.name.getText() === functionName
+  ) {
+    // Check arrow functions assigned as object properties
+    for (const param of node.parameters) {
+      if (param.name.getText() === paramName && param.type) {
+        return param.type.getText() || "";
       }
     }
   }

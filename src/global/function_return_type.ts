@@ -47,7 +47,7 @@ export function expectFunctionReturnTypeAnnotation(
 }
 function findNode(node: ts.Node, functionName: string): string {
   if (ts.isFunctionDeclaration(node)) {
-    // Handle function declarations as before
+    // Handle function declarations
     if (node.name && node.name.getText() === functionName && node.type) {
       return node.type.getText();
     }

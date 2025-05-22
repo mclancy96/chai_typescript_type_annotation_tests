@@ -1,5 +1,5 @@
 import { join } from "path";
-import { expectVariableExplicitTypeAnnotation } from "../src/variable_explicit_type";
+import { expectVariableExplicitTypeAnnotation } from "../../src/global/variable_explicit_type";
 
 describe("Test of Variable Type - Happy Path", () => {
   expectVariableExplicitTypeAnnotation(

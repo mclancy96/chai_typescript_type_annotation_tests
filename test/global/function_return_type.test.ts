@@ -1,5 +1,5 @@
 import { join } from "path";
-import { expectFunctionReturnTypeAnnotation } from "../src/function_return_type";
+import { expectFunctionReturnTypeAnnotation } from "../../src/global/function_return_type";
 
 describe("Test of Function Return - Happy Path", () => {
   expectFunctionReturnTypeAnnotation(

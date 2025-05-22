@@ -1,5 +1,5 @@
 import { join } from "path";
-import { expectFunctionParameterTypeAnnotation } from "../src/function_parameter_type";
+import { expectFunctionParameterTypeAnnotation } from "../../src/global/function_parameter_type";
 
 describe("Test of Function Parameter - Happy Path", () => {
   expectFunctionParameterTypeAnnotation(

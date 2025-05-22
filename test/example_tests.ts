@@ -16,3 +16,18 @@ const swimmer = (): number => {
 };
 
 let loadingStatus: "loading" | "success" | "error" = "loading";
+
+class Person {
+  name: string;
+  age: number;
+  weight: number;
+
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+
+  meet(): string {
+    return `Hi, I'm ${this.name}`;
+  }
+}
