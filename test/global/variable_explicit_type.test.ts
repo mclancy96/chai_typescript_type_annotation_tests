@@ -1,40 +1,61 @@
-import path from "path";
 import * as ts from "typescript";
-import { readFileSync } from "fs";
-import {
-  expectVariableExplicitTypeAnnotation,
-  findNode,
-} from "../../src/global/variable_explicit_type";
+import { findNode } from "../../src/global/variable_explicit_type";
 import { expect } from "chai";
 
-const exampleTestFile = path.resolve(__dirname, "../../test/example_tests.ts");
-const tsCode = readFileSync(exampleTestFile, "utf8");
-const sourceFile = ts.createSourceFile(
-  exampleTestFile,
-  tsCode,
-  ts.ScriptTarget.Latest,
-  true
-);
+describe("Variable Explicit Type Annotation", () => {
+  const goodCode = `
+    const snowball: string = "5";
+    let loadingStatus: "loading" | "success" | "error" = "loading";
+  `;
+  const badCode = `
+    const bowsnall: string[] = "5";
+    const noType = 42;
+  `;
 
-describe("Test of Variable Type - Happy Path", () => {
-  expectVariableExplicitTypeAnnotation(exampleTestFile, "snowball", "string");
+  it("should find the correct type annotation for a variable (happy path)", () => {
+    const sourceFile = ts.createSourceFile(
+      "inline_good.ts",
+      goodCode,
+      ts.ScriptTarget.Latest,
+      true
+    );
+    const found1 = findNode(sourceFile, "snowball");
+    expect(found1).to.equal("string");
 
-  expectVariableExplicitTypeAnnotation(
-    exampleTestFile,
-    "loadingStatus",
-    '"loading" | "success" | "error"'
-  );
-});
+    const found2 = findNode(sourceFile, "loadingStatus");
+    expect(found2).to.equal('"loading" | "success" | "error"');
+  });
 
-describe("findNode negative cases", () => {
-  it("should return the actual type annotation, which does not match the expected", () => {
-    // bowsnall is declared as string[] in the file, so let's check for 'string'
+  it("should return the actual type annotation, which does not match the expected (negative path)", () => {
+    const sourceFile = ts.createSourceFile(
+      "inline_bad.ts",
+      badCode,
+      ts.ScriptTarget.Latest,
+      true
+    );
     const found = findNode(sourceFile, "bowsnall");
     expect(found).to.not.equal("string");
     expect(found).to.equal("string[]");
   });
 
+  it("should return an empty string for a variable with no explicit type annotation (negative path)", () => {
+    const sourceFile = ts.createSourceFile(
+      "inline_bad.ts",
+      badCode,
+      ts.ScriptTarget.Latest,
+      true
+    );
+    const found = findNode(sourceFile, "noType");
+    expect(found).to.equal("");
+  });
+
   it("should return an empty string for a variable that does not exist", () => {
+    const sourceFile = ts.createSourceFile(
+      "inline_good.ts",
+      goodCode,
+      ts.ScriptTarget.Latest,
+      true
+    );
     const found = findNode(sourceFile, "notARealVar");
     expect(found).to.equal("");
   });
