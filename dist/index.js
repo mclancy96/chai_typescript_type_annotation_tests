@@ -21,3 +21,4 @@ __exportStar(require("./global/match_function_parameter_type"), exports);
 __exportStar(require("./class/class_property_type"), exports);
 __exportStar(require("./class/class_method_return_type"), exports);
 __exportStar(require("./class/match_class_method_parameter_type"), exports);
+__exportStar(require("./global/type_alias_property_type"), exports);

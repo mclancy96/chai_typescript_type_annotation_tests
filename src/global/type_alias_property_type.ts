@@ -2,7 +2,7 @@ import { expect } from "chai";
 import * as ts from "typescript";
 import { readFileSync } from "fs";
 
-export function expectVariableExplicitTypeAnnotation(
+export function expectTypeAliasPropertyTypeAnnotation(
   testFilePath: string,
   typeAliasName: string,
   propertyName: string,

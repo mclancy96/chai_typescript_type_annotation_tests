@@ -5,3 +5,4 @@ export * from "./global/match_function_parameter_type";
 export * from "./class/class_property_type";
 export * from "./class/class_method_return_type";
 export * from "./class/match_class_method_parameter_type";
+export * from './global/type_alias_property_type'

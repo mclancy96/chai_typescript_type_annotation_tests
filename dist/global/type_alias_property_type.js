@@ -33,12 +33,12 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.expectVariableExplicitTypeAnnotation = expectVariableExplicitTypeAnnotation;
+exports.expectTypeAliasPropertyTypeAnnotation = expectTypeAliasPropertyTypeAnnotation;
 exports.findTypeAliasPropertyType = findTypeAliasPropertyType;
 const chai_1 = require("chai");
 const ts = __importStar(require("typescript"));
 const fs_1 = require("fs");
-function expectVariableExplicitTypeAnnotation(testFilePath, typeAliasName, propertyName, expectedTypeName) {
+function expectTypeAliasPropertyTypeAnnotation(testFilePath, typeAliasName, propertyName, expectedTypeName) {
     it(`should declare '${typeAliasName}' type alias with a ${propertyName} property of type annotation '${expectedTypeName}'`, () => {
         const tsCode = (0, fs_1.readFileSync)(testFilePath, "utf8");
         const sourceFile = ts.createSourceFile(testFilePath, tsCode, ts.ScriptTarget.Latest, true);

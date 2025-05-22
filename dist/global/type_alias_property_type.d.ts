@@ -1,5 +1,5 @@
 import * as ts from "typescript";
-export declare function expectVariableExplicitTypeAnnotation(testFilePath: string, typeAliasName: string, propertyName: string, expectedTypeName: string): void;
+export declare function expectTypeAliasPropertyTypeAnnotation(testFilePath: string, typeAliasName: string, propertyName: string, expectedTypeName: string): void;
 /**
  * Finds the type annotation of a property in a type alias.
  * @param node - The root TypeScript AST node
