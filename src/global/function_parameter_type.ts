@@ -49,7 +49,7 @@ export function expectFunctionParameterTypeAnnotation(
   });
 }
 
-function findNode(
+export function findNode(
   node: ts.Node,
   paramName: string,
   functionName: string
