@@ -2,7 +2,7 @@ import { expect } from "chai";
 import * as ts from "typescript";
 import { findClassMethodReturnType } from "../../src/class/class_method_return_type";
 
-describe("findClassMethodReturnType - Class Method Return Type Annotation", () => {
+describe("Class Method Return Type Annotation", () => {
   const goodCode = `
     class User {
       getFullName(): string {
