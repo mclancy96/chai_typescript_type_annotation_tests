@@ -40,7 +40,7 @@ export function matchFunctionParameterTypeAnnotation(
   });
 }
 
-function findNodes(
+export function findNodes(
   node: ts.Node,
   functionName: string,
   accumulator: string[],
