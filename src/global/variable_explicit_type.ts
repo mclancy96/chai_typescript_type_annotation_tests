@@ -33,14 +33,14 @@ export function expectVariableExplicitTypeAnnotation(
 
     const found = findNode(sourceFile, varName);
 
-    expect(
+    return expect(
       found,
       `'${varName}' variable must have an explicit type annotation of '${typeName}' but found '${found}'`
     ).to.equal(typeName);
   });
 }
 
-function findNode(node: ts.Node, varName: string): string {
+export function findNode(node: ts.Node, varName: string): string {
   if (ts.isVariableDeclaration(node) && node.name.getText() === varName) {
     return node.type?.getText() || "";
   }
