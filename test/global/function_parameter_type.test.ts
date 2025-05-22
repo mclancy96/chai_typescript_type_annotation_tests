@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import * as ts from "typescript";
-import { findNode } from "../../src/global/function_parameter_type";
+import { findFunctionParameterNode } from "../../src/global/function_parameter_type";
 
 describe("Function Parameter Type Annotation", () => {
   const goodCode = `
@@ -24,7 +24,7 @@ describe("Function Parameter Type Annotation", () => {
       ts.ScriptTarget.Latest,
       true
     );
-    const found = findNode(sourceFile, "name", "greet");
+    const found = findFunctionParameterNode(sourceFile, "name", "greet");
     expect(found).to.equal("string");
   });
 
@@ -35,7 +35,7 @@ describe("Function Parameter Type Annotation", () => {
       ts.ScriptTarget.Latest,
       true
     );
-    const found = findNode(sourceFile, "name", "shout");
+    const found = findFunctionParameterNode(sourceFile, "name", "shout");
     expect(found).to.not.equal("string");
     expect(found).to.equal("number");
   });
@@ -47,7 +47,7 @@ describe("Function Parameter Type Annotation", () => {
       ts.ScriptTarget.Latest,
       true
     );
-    const found = findNode(sourceFile, "person", "wave");
+    const found = findFunctionParameterNode(sourceFile, "person", "wave");
     expect(found).to.equal("");
   });
 
@@ -58,7 +58,11 @@ describe("Function Parameter Type Annotation", () => {
       ts.ScriptTarget.Latest,
       true
     );
-    const found = findNode(sourceFile, "notARealParam", "greet");
+    const found = findFunctionParameterNode(
+      sourceFile,
+      "notARealParam",
+      "greet"
+    );
     expect(found).to.equal("");
   });
 });

@@ -40,7 +40,11 @@ export function expectFunctionParameterTypeAnnotation(
       true
     );
 
-    const found = findNode(sourceFile, paramName, functionName);
+    const found = findFunctionParameterNode(
+      sourceFile,
+      paramName,
+      functionName
+    );
 
     expect(
       found,
@@ -49,23 +53,13 @@ export function expectFunctionParameterTypeAnnotation(
   });
 }
 
-export function findNode(
+export function findFunctionParameterNode(
   node: ts.Node,
   paramName: string,
   functionName: string
 ): string {
   if (ts.isFunctionDeclaration(node) && node.name?.getText() === functionName) {
     // Check regular function declarations
-    for (const param of node.parameters) {
-      if (param.name.getText() === paramName && param.type) {
-        return param.type.getText() || "";
-      }
-    }
-  } else if (
-    ts.isMethodDeclaration(node) &&
-    node.name.getText() === functionName
-  ) {
-    // Check regular method declarations
     for (const param of node.parameters) {
       if (param.name.getText() === paramName && param.type) {
         return param.type.getText() || "";
@@ -83,21 +77,10 @@ export function findNode(
         }
       }
     }
-  } else if (
-    ts.isArrowFunction(node) &&
-    ts.isPropertyAssignment(node.parent) &&
-    node.parent.name.getText() === functionName
-  ) {
-    // Check arrow functions assigned as object properties
-    for (const param of node.parameters) {
-      if (param.name.getText() === paramName && param.type) {
-        return param.type.getText() || "";
-      }
-    }
   }
   return (
     ts.forEachChild(node, (childNode) =>
-      findNode(childNode, paramName, functionName)
+      findFunctionParameterNode(childNode, paramName, functionName)
     ) || ""
   );
 }
