@@ -40,7 +40,7 @@ export function expectClassMethodReturnTypeAnnotation(
       true
     );
 
-    const found = findClassMethod(sourceFile, className, methodName);
+    const found = findClassMethodReturnType(sourceFile, className, methodName);
     expect(
       found,
       `Method '${methodName}' in class '${className}' must have an explicit return type annotation of '${returnType}' but found '${found}'`
@@ -48,7 +48,7 @@ export function expectClassMethodReturnTypeAnnotation(
   });
 }
 
-function findClassMethod(
+export function findClassMethodReturnType(
   node: ts.Node,
   className: string,
   methodName: string
@@ -71,7 +71,7 @@ function findClassMethod(
   }
   return (
     ts.forEachChild(node, (childNode) =>
-      findClassMethod(childNode, className, methodName)
+      findClassMethodReturnType(childNode, className, methodName)
     ) || ""
   );
 }

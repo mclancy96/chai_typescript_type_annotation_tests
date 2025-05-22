@@ -2,7 +2,7 @@ import { expect } from "chai";
 import * as ts from "typescript";
 import { findFunctionReturnType } from "../../src/global/function_return_type";
 
-describe("findFunctionReturnType - Function Return Type Annotation", () => {
+describe("Function Return Type Annotation", () => {
   const goodCode = `
     function swim(): string {
       return "done";

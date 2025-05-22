@@ -33,7 +33,7 @@ export function expectClassPropertyTypeAnnotation(
       true
     );
 
-    const found = findClassProperty(sourceFile, className, propertyName);
+    const found = findClassPropertyType(sourceFile, className, propertyName);
 
     expect(
       found,
@@ -42,7 +42,7 @@ export function expectClassPropertyTypeAnnotation(
   });
 }
 
-function findClassProperty(
+export function findClassPropertyType(
   node: ts.Node,
   className: string,
   propertyName: string
@@ -65,7 +65,7 @@ function findClassProperty(
   }
   return (
     ts.forEachChild(node, (childNode) =>
-      findClassProperty(childNode, className, propertyName)
+      findClassPropertyType(childNode, className, propertyName)
     ) || ""
   );
 }
