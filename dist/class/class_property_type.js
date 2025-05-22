@@ -33,40 +33,47 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.expectVariableExplicitTypeAnnotation = expectVariableExplicitTypeAnnotation;
-exports.findVariableType = findVariableType;
+exports.expectClassPropertyTypeAnnotation = expectClassPropertyTypeAnnotation;
+exports.findClassPropertyType = findClassPropertyType;
 const chai_1 = require("chai");
 const ts = __importStar(require("typescript"));
 const fs_1 = require("fs");
 /**
- * Tests if a variable in a TypeScript file has an explicit type annotation of the expected type.
+ * Tests if a class in a TypeScript file has a property with the expected type annotation.
  *
- * This function creates a test that verifies whether a variable with the given name
- * has been explicitly annotated with the specified type in the provided TypeScript file.
+ * This function creates a test that verifies whether a class has a property with the given name
+ * that is explicitly annotated with the specified type in the provided TypeScript file.
  * It uses the TypeScript compiler API to parse and analyze the code.
  *
  * @param testFilePath - The path to the TypeScript file to test
- * @param varName - The name of the variable to check for type annotation
+ * @param className - The name of the class containing the property
+ * @param propertyName - The name of the property to check
  * @param typeName - The expected type annotation as a string (exactly as it appears in code)
  *
  * @example
- * // Check if the 'user' variable has an explicit 'Person' type annotation
- * expectVariableExplicitTypeAnnotation('./src/users.ts', 'user', 'Person');
+ * // Check if the 'Person' class has a 'name' property with type 'string'
+ * expectClassPropertyTypeAnnotation('./src/models.ts', 'Person', 'name', 'string');
  */
-function expectVariableExplicitTypeAnnotation(testFilePath, varName, typeName) {
-    it(`should declare '${varName}' variable with an explicit type annotation of '${typeName}'`, () => {
+function expectClassPropertyTypeAnnotation(testFilePath, className, propertyName, typeName) {
+    it(`should declare '${propertyName}' property in class '${className}' with an explicit type annotation of '${typeName}'`, () => {
         const tsCode = (0, fs_1.readFileSync)(testFilePath, "utf8");
         const sourceFile = ts.createSourceFile(testFilePath, tsCode, ts.ScriptTarget.Latest, true);
-        const found = findVariableType(sourceFile, varName);
-        return (0, chai_1.expect)(found, `'${varName}' variable must have an explicit type annotation of '${typeName}' but found '${found}'`).to.equal(typeName);
+        const found = findClassPropertyType(sourceFile, className, propertyName);
+        (0, chai_1.expect)(found, `'${propertyName}' property in class '${className}' must have an explicit type annotation of '${typeName}' but found '${found}'`).to.equal(typeName);
     });
 }
-function findVariableType(node, varName) {
-    var _a;
-    if (ts.isVariableDeclaration(node) && node.name.getText() === varName) {
-        return ((_a = node.type) === null || _a === void 0 ? void 0 : _a.getText()) || "";
+function findClassPropertyType(node, className, propertyName) {
+    if (ts.isClassDeclaration(node) &&
+        node.name &&
+        node.name.getText() === className) {
+        for (const member of node.members) {
+            if (ts.isPropertyDeclaration(member) &&
+                member.name &&
+                member.name.getText() === propertyName &&
+                member.type) {
+                return member.type.getText();
+            }
+        }
     }
-    return (ts.forEachChild(node, (childNode) => {
-        return findVariableType(childNode, varName);
-    }) || "");
+    return (ts.forEachChild(node, (childNode) => findClassPropertyType(childNode, className, propertyName)) || "");
 }

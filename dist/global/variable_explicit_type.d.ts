@@ -15,4 +15,4 @@ import * as ts from "typescript";
  * expectVariableExplicitTypeAnnotation('./src/users.ts', 'user', 'Person');
  */
 export declare function expectVariableExplicitTypeAnnotation(testFilePath: string, varName: string, typeName: string): void;
-export declare function findNode(node: ts.Node, varName: string): string;
+export declare function findVariableType(node: ts.Node, varName: string): string;
