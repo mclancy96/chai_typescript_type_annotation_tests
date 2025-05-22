@@ -1,10 +1,7 @@
 import { expect } from "chai";
 import * as fs from "fs";
 import * as path from "path";
-import {
-  expectClassMethodReturnTypeAnnotation,
-  expectClassPropertyTypeAnnotation,
-} from "../../src/class/class_types";
+import { expectClassMethodReturnTypeAnnotation } from "../../src/class/class_method_return_type";
 
 describe("TypeScript Type Annotation Tests", () => {
   // Create a temporary test file path
@@ -109,70 +106,6 @@ describe("TypeScript Type Annotation Tests", () => {
       } catch (error: any) {
         expect(error.message).to.include(
           "Method 'getAge' in class 'Person' must have an explicit return type annotation"
-        );
-      }
-    });
-  });
-
-  describe("expectClassPropertyTypeAnnotation", () => {
-    it("should pass when property has the correct type annotation", () => {
-      expectClassPropertyTypeAnnotation(
-        testFilePath,
-        "Person",
-        "name",
-        "string"
-      );
-      expectClassPropertyTypeAnnotation(
-        testFilePath,
-        "Person",
-        "age",
-        "number"
-      );
-      expectClassPropertyTypeAnnotation(
-        testFilePath,
-        "Employee",
-        "position",
-        "string"
-      );
-    });
-
-    it("should pass when checking private property type", () => {
-      expectClassPropertyTypeAnnotation(
-        testFilePath,
-        "Person",
-        "_id",
-        "string"
-      );
-    });
-
-    it("should fail when property does not exist in the class", () => {
-      try {
-        expectClassPropertyTypeAnnotation(
-          testFilePath,
-          "Person",
-          "nonExistentProperty",
-          "string"
-        );
-        expect.fail("Test should have failed but passed");
-      } catch (error: any) {
-        expect(error.message).to.include(
-          "must have an explicit type annotation"
-        );
-      }
-    });
-
-    it("should fail when type annotation is incorrect", () => {
-      try {
-        expectClassPropertyTypeAnnotation(
-          testFilePath,
-          "Person",
-          "age",
-          "string"
-        );
-        expect.fail("Test should have failed but passed");
-      } catch (error: any) {
-        expect(error.message).to.include(
-          "must have an explicit type annotation of 'string'"
         );
       }
     });
