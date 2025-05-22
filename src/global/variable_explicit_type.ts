@@ -31,7 +31,7 @@ export function expectVariableExplicitTypeAnnotation(
       true
     );
 
-    const found = findNode(sourceFile, varName);
+    const found = findVariableType(sourceFile, varName);
 
     return expect(
       found,
@@ -40,13 +40,13 @@ export function expectVariableExplicitTypeAnnotation(
   });
 }
 
-export function findNode(node: ts.Node, varName: string): string {
+export function findVariableType(node: ts.Node, varName: string): string {
   if (ts.isVariableDeclaration(node) && node.name.getText() === varName) {
     return node.type?.getText() || "";
   }
   return (
     ts.forEachChild(node, (childNode) => {
-      return findNode(childNode, varName);
+      return findVariableType(childNode, varName);
     }) || ""
   );
 }

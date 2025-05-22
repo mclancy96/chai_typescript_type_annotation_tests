@@ -40,7 +40,7 @@ export function expectFunctionParameterTypeAnnotation(
       true
     );
 
-    const found = findFunctionParameterNode(
+    const found = findFunctionParameterType(
       sourceFile,
       paramName,
       functionName
@@ -53,7 +53,7 @@ export function expectFunctionParameterTypeAnnotation(
   });
 }
 
-export function findFunctionParameterNode(
+export function findFunctionParameterType(
   node: ts.Node,
   paramName: string,
   functionName: string
@@ -80,7 +80,7 @@ export function findFunctionParameterNode(
   }
   return (
     ts.forEachChild(node, (childNode) =>
-      findFunctionParameterNode(childNode, paramName, functionName)
+      findFunctionParameterType(childNode, paramName, functionName)
     ) || ""
   );
 }

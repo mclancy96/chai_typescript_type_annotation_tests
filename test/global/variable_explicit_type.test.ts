@@ -1,5 +1,5 @@
 import * as ts from "typescript";
-import { findNode } from "../../src/global/variable_explicit_type";
+import { findVariableType } from "../../src/global/variable_explicit_type";
 import { expect } from "chai";
 
 describe("Variable Explicit Type Annotation", () => {
@@ -19,10 +19,10 @@ describe("Variable Explicit Type Annotation", () => {
       ts.ScriptTarget.Latest,
       true
     );
-    const found1 = findNode(sourceFile, "snowball");
+    const found1 = findVariableType(sourceFile, "snowball");
     expect(found1).to.equal("string");
 
-    const found2 = findNode(sourceFile, "loadingStatus");
+    const found2 = findVariableType(sourceFile, "loadingStatus");
     expect(found2).to.equal('"loading" | "success" | "error"');
   });
 
@@ -33,7 +33,7 @@ describe("Variable Explicit Type Annotation", () => {
       ts.ScriptTarget.Latest,
       true
     );
-    const found = findNode(sourceFile, "bowsnall");
+    const found = findVariableType(sourceFile, "bowsnall");
     expect(found).to.not.equal("string");
     expect(found).to.equal("string[]");
   });
@@ -45,7 +45,7 @@ describe("Variable Explicit Type Annotation", () => {
       ts.ScriptTarget.Latest,
       true
     );
-    const found = findNode(sourceFile, "noType");
+    const found = findVariableType(sourceFile, "noType");
     expect(found).to.equal("");
   });
 
@@ -56,7 +56,7 @@ describe("Variable Explicit Type Annotation", () => {
       ts.ScriptTarget.Latest,
       true
     );
-    const found = findNode(sourceFile, "notARealVar");
+    const found = findVariableType(sourceFile, "notARealVar");
     expect(found).to.equal("");
   });
 });

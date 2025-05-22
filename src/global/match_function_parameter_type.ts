@@ -31,7 +31,12 @@ export function matchFunctionParameterTypeAnnotation(
     );
 
     const paramTypes: string[] = [];
-    findNodes(sourceFile, functionName, paramTypes, expectedParameterTypeArray);
+    findFunctionParameterTypes(
+      sourceFile,
+      functionName,
+      paramTypes,
+      expectedParameterTypeArray
+    );
 
     expect(
       paramTypes,
@@ -40,7 +45,7 @@ export function matchFunctionParameterTypeAnnotation(
   });
 }
 
-export function findNodes(
+export function findFunctionParameterTypes(
   node: ts.Node,
   functionName: string,
   accumulator: string[],
@@ -73,6 +78,11 @@ export function findNodes(
     }
   }
   ts.forEachChild(node, (childNode) =>
-    findNodes(childNode, functionName, accumulator, expectedParameterTypeArray)
+    findFunctionParameterTypes(
+      childNode,
+      functionName,
+      accumulator,
+      expectedParameterTypeArray
+    )
   );
 }

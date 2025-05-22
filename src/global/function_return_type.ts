@@ -38,14 +38,17 @@ export function expectFunctionReturnTypeAnnotation(
       true
     );
 
-    const found = findNode(sourceFile, functionName);
+    const found = findFunctionReturnType(sourceFile, functionName);
     expect(
       found,
       `Function '${functionName}' must have an explicit return type annotation of '${returnType}' but found '${found}'`
     ).to.deep.equal(returnType);
   });
 }
-export function findNode(node: ts.Node, functionName: string): string {
+export function findFunctionReturnType(
+  node: ts.Node,
+  functionName: string
+): string {
   if (ts.isFunctionDeclaration(node)) {
     // Handle function declarations
     if (node.name && node.name.getText() === functionName && node.type) {
@@ -61,7 +64,8 @@ export function findNode(node: ts.Node, functionName: string): string {
     }
   }
   return (
-    ts.forEachChild(node, (childNode) => findNode(childNode, functionName)) ||
-    ""
+    ts.forEachChild(node, (childNode) =>
+      findFunctionReturnType(childNode, functionName)
+    ) || ""
   );
 }

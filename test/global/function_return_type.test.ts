@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import * as ts from "typescript";
-import { findNode } from "../../src/global/function_return_type";
+import { findFunctionReturnType } from "../../src/global/function_return_type";
 
-describe("findNode - Function Return Type Annotation", () => {
+describe("findFunctionReturnType - Function Return Type Annotation", () => {
   const goodCode = `
     function swim(): string {
       return "done";
@@ -30,10 +30,10 @@ describe("findNode - Function Return Type Annotation", () => {
       ts.ScriptTarget.Latest,
       true
     );
-    const foundSwim = findNode(sourceFile, "swim");
+    const foundSwim = findFunctionReturnType(sourceFile, "swim");
     expect(foundSwim).to.equal("string");
 
-    const foundGreet = findNode(sourceFile, "greet");
+    const foundGreet = findFunctionReturnType(sourceFile, "greet");
     expect(foundGreet).to.equal("number");
   });
 
@@ -44,11 +44,11 @@ describe("findNode - Function Return Type Annotation", () => {
       ts.ScriptTarget.Latest,
       true
     );
-    const foundSwimmer = findNode(sourceFile, "swimmer");
+    const foundSwimmer = findFunctionReturnType(sourceFile, "swimmer");
     expect(foundSwimmer).to.not.equal("string");
     expect(foundSwimmer).to.equal("number");
 
-    const foundShout = findNode(sourceFile, "shout");
+    const foundShout = findFunctionReturnType(sourceFile, "shout");
     expect(foundShout).to.equal("string");
   });
 
@@ -59,7 +59,7 @@ describe("findNode - Function Return Type Annotation", () => {
       ts.ScriptTarget.Latest,
       true
     );
-    const foundNoType = findNode(sourceFile, "noType");
+    const foundNoType = findFunctionReturnType(sourceFile, "noType");
     expect(foundNoType).to.equal("");
   });
 
@@ -70,7 +70,7 @@ describe("findNode - Function Return Type Annotation", () => {
       ts.ScriptTarget.Latest,
       true
     );
-    const found = findNode(sourceFile, "notARealFunction");
+    const found = findFunctionReturnType(sourceFile, "notARealFunction");
     expect(found).to.equal("");
   });
 });

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import * as ts from "typescript";
-import { findNodes } from "../../src/global/match_function_parameter_type";
+import { findFunctionParameterTypes } from "../../src/global/match_function_parameter_type";
 
 describe("Match Function Parameter Type Annotation", () => {
   const goodCode = `
@@ -26,11 +26,17 @@ describe("Match Function Parameter Type Annotation", () => {
       true
     );
     const paramTypes: string[] = [];
-    findNodes(sourceFile, "greet", paramTypes, ["string", "string"]);
+    findFunctionParameterTypes(sourceFile, "greet", paramTypes, [
+      "string",
+      "string",
+    ]);
     expect(paramTypes).to.deep.equal(["string", "string"]);
 
     const addParamTypes: string[] = [];
-    findNodes(sourceFile, "add", addParamTypes, ["number", "number"]);
+    findFunctionParameterTypes(sourceFile, "add", addParamTypes, [
+      "number",
+      "number",
+    ]);
     expect(addParamTypes).to.deep.equal(["number", "number"]);
   });
 
@@ -42,11 +48,17 @@ describe("Match Function Parameter Type Annotation", () => {
       true
     );
     const paramTypes: string[] = [];
-    findNodes(sourceFile, "shout", paramTypes, ["string", "string"]);
+    findFunctionParameterTypes(sourceFile, "shout", paramTypes, [
+      "string",
+      "string",
+    ]);
     expect(paramTypes).to.deep.equal(["string"]); // No match for "string", "string"
 
     const paramTypesNumber: string[] = [];
-    findNodes(sourceFile, "shout", paramTypesNumber, ["number", "string"]);
+    findFunctionParameterTypes(sourceFile, "shout", paramTypesNumber, [
+      "number",
+      "string",
+    ]);
     expect(paramTypesNumber).to.deep.equal(["number", "string"]);
   });
 
@@ -58,7 +70,7 @@ describe("Match Function Parameter Type Annotation", () => {
       true
     );
     const paramTypes: string[] = [];
-    findNodes(sourceFile, "wave", paramTypes, ["", ""]);
+    findFunctionParameterTypes(sourceFile, "wave", paramTypes, ["", ""]);
     expect(paramTypes).to.deep.equal([]);
   });
 
@@ -70,7 +82,9 @@ describe("Match Function Parameter Type Annotation", () => {
       true
     );
     const paramTypes: string[] = [];
-    findNodes(sourceFile, "notARealFunction", paramTypes, ["string"]);
+    findFunctionParameterTypes(sourceFile, "notARealFunction", paramTypes, [
+      "string",
+    ]);
     expect(paramTypes).to.deep.equal([]);
   });
 });
