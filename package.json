@@ -1,6 +1,6 @@
 {
   "name": "chai_typescript_type_annotation_tests",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "This provides some chai tests for verifying type annotation in Typescript",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
