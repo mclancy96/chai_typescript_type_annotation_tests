@@ -2,85 +2,129 @@
 
 ## Intro
 
-This package was built with the goal of creating helpers that test type annotation in Typescript in Chai test cases. It was created to test student's code to ensure that they are typing their variables and functions properly.
+This package provides helpers for testing TypeScript type annotations in Chai/Mocha test cases. It is designed to help instructors and teams enforce explicit typing in student or team code.
 
 ## Installation
 
-- Be sure to call `npm install chai_typescript_type_annotation_tests` to install the package.
-- Once the package is installed, you can then use any of the functions from within Chai test cases.
+- Run `npm install chai_typescript_type_annotation_tests` to install the package.
+- Once installed, import and use any of the functions in your Chai/Mocha test cases.
 
 ## Usage
 
-### expectVariableExplicitTypeAnnotation(testFilePath: string, varName: string, typeName: string)
+---
 
-`expectVariableExplicitTypeAnnotation` takes the filepath to the TypeScript file you're testing, the name of the variable, and the expected type name. It asserts that the specified variable is declared with an explicit type annotation matching the expected type.
+### Variable Type Annotation
 
-#### Example Usage
+#### `expectVariableExplicitTypeAnnotation(testFilePath: string, varName: string, typeName: string)`
+
+Asserts that a variable is declared with an explicit type annotation matching the expected type.
+
+**Example:**
 
 ```typescript
-describe("Lab 2 — Section 3: Optional Properties", () => {
-  expectVariableExplicitTypeAnnotation(myFilePath, "userWithName", "User");
-});
+expectVariableExplicitTypeAnnotation(myFilePath, "userWithName", "User");
 ```
-
-If the variable is not found or does not have the correct type annotation, the test will fail with a helpful message.
 
 ---
 
-### expectFunctionReturnTypeAnnotation(testFilePath: string, functionName: string, returnType: string)
+### Function Return Type Annotation
 
-`expectFunctionReturnTypeAnnotation` checks that a function (either a function declaration or an arrow function assigned to a variable) has an explicit return type annotation matching the expected type.
+#### `expectFunctionReturnTypeAnnotation(testFilePath: string, functionName: string, returnType: string)`
 
-#### Example Usage
+Checks that a function (declaration or arrow function assigned to a variable) has an explicit return type annotation matching the expected type.
+
+**Example:**
 
 ```typescript
-describe("Lab 3 — Section 1: Function Return Types", () => {
-  expectFunctionReturnTypeAnnotation(myFilePath, "getUser", "User");
-});
+expectFunctionReturnTypeAnnotation(myFilePath, "getUser", "User");
 ```
-
-If the function does not have the correct return type annotation, the test will fail.
 
 ---
 
-### matchFunctionParameterTypeAnnotation(testFilePath: string, functionName: string, expectedParameterTypeArray: string[])
+### Function Parameter Type Annotation (by parameter name)
 
-This helper checks that the parameters of a function (by name) have explicit type annotations, and that the types match the expected types in the order provided. This is useful when you want to check parameter types without requiring specific parameter names.
+#### `expectFunctionParameterTypeAnnotation(testFilePath: string, functionName: string, paramName: string, paramType: string)`
 
-#### Example Usage
+Asserts that a specific parameter of a function (by name) has an explicit type annotation matching the expected type.
+
+**Example:**
 
 ```typescript
-describe("Lab 4 — Section 2: Function Parameter Types", () => {
-  matchFunctionParameterTypeAnnotation(myFilePath, "createUser", [
-    "string",
-    "number",
-    "boolean",
-  ]);
-});
+expectFunctionParameterTypeAnnotation(
+  myFilePath,
+  "updateUser",
+  "userId",
+  "string"
+);
 ```
-
-If the function's parameter types do not match the expected array, the test will fail and show the actual types found.
 
 ---
 
-### expectFunctionParameterTypeAnnotation(testFilePath: string, functionName: string, paramName: string, paramType: string)
+### Function Parameter Type Annotation (by parameter order)
 
-This function asserts that a specific parameter of a function (by name) has an explicit type annotation matching the expected type.
+#### `matchFunctionParameterTypeAnnotation(testFilePath: string, functionName: string, expectedParameterTypeArray: string[])`
 
-#### Example Usage
+Checks that the parameters of a function have explicit type annotations matching the expected types in order.
+
+**Example:**
 
 ```typescript
-describe("Lab 5 — Section 1: Specific Parameter Types", () => {
-  expectFunctionParameterTypeAnnotation(
-    myFilePath,
-    "updateUser",
-    "userId",
-    "string"
-  );
-});
+matchFunctionParameterTypeAnnotation(myFilePath, "createUser", [
+  "string",
+  "number",
+  "boolean",
+]);
 ```
 
-If the parameter is missing or does not have the correct type annotation, the test will fail.
+---
+
+### Class Property Type Annotation
+
+#### `expectClassPropertyTypeAnnotation(testFilePath: string, className: string, propertyName: string, typeName: string)`
+
+Asserts that a class property is declared with an explicit type annotation matching the expected type.
+
+**Example:**
+
+```typescript
+expectClassPropertyTypeAnnotation(myFilePath, "Person", "name", "string");
+```
+
+---
+
+### Class Method Return Type Annotation
+
+#### `expectClassMethodReturnTypeAnnotation(testFilePath: string, className: string, methodName: string, returnType: string)`
+
+Checks that a class method has an explicit return type annotation matching the expected type.
+
+**Example:**
+
+```typescript
+expectClassMethodReturnTypeAnnotation(
+  myFilePath,
+  "User",
+  "getFullName",
+  "string"
+);
+```
+
+---
+
+### Class Method Parameter Type Annotation
+
+#### `matchClassMethodParameterTypeAnnotation(testFilePath: string, className: string, methodName: string, expectedParameterTypeArray: string[])`
+
+Checks that the parameters of a class method have explicit type annotations matching the expected types in order.
+
+**Example:**
+
+```typescript
+matchClassMethodParameterTypeAnnotation(myFilePath, "User", "setName", [
+  "string",
+  "string",
+]);
+```
 
 ---
 
